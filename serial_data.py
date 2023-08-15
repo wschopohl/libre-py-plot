@@ -13,7 +13,7 @@ running = True
 ser = serial.Serial('/dev/ttyUSB0', 115200)  # open serial port
 
 def gather():
-    global received
+    global received, datahistory
     
 
     while running:
@@ -22,7 +22,8 @@ def gather():
         try:
             data = json.loads(line)
             mppt = MPPTController(data)
-            datahistory.append(mppt)
+            #datahistory.append(mppt)
+            datahistory = [mppt]
             received = True
         except json.decoder.JSONDecodeError:
             pass
