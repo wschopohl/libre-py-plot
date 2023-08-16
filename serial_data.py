@@ -39,6 +39,11 @@ def toggle_load():
         cmd = b'=Load {"wEnable":true}\n'
     ser.write(cmd)
 
+def start_sweep():
+    if not received: return
+    cmd = b'!Device/xSweep\n'
+    ser.write(cmd)
+
 
 def stop():
     global running

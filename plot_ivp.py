@@ -8,26 +8,21 @@ import math
 
 # matplotlib.use('TkAgg') 
 
-figure, axis = plt.subplots(2, 3, figsize=(8, 8))
+figure, axis = plt.subplots(1, 3, figsize=(8, 8))
 figure.tight_layout()
 plt.subplots_adjust(hspace=0.2, wspace=0.1 )
-axis[0,0].set_title("Solar Voltage")
-axis[0,1].set_title("Solar Current")
-axis[0,2].set_title("PWM Frequency")
-axis[1,0].set_title("Battery Voltage")
-axis[1,1].set_title("Battery Current")
-axis[1,2].set_title("Load Current")
+axis[0].set_title("Solar Voltage")
+axis[1].set_title("Solar Current")
+axis[2].set_title("Solar Power")
 
 
 def idx2axis(idx):
-    row = math.floor(idx / 3)
-    col = idx % 3
-    return row, col
+    return idx
 
 xs = range(100)
-ys = [[11,22] * 50, [-5,5] * 50, [0,100] * 50, [11,14.5] * 50, [-2.1,2.1] * 50, [-2.1,2.1] * 50]
+ys = [[11,22] * 50, [-5,5] * 50, [0,70] * 50]
 
-styles = ['r-', 'g-', 'y-', 'm-', 'k-', 'c-']
+styles = ['r-', 'g-', 'y-']
 
 def iplot(idx, style):
     return axis[idx2axis(idx)].plot(xs, ys[idx], style, animated=True)[0]
@@ -40,10 +35,7 @@ def animate(i):
     # xs.append(i)
     ys[0].append(serial_data.datahistory[-1].solar_voltage)
     ys[1].append(-serial_data.datahistory[-1].solar_current)
-    ys[2].append(serial_data.datahistory[-1].duty_cycle)
-    ys[3].append(serial_data.datahistory[-1].battery_voltage)
-    ys[4].append(serial_data.datahistory[-1].battery_current)
-    ys[5].append(serial_data.datahistory[-1].load_current)
+    ys[2].append(abs(serial_data.datahistory[-1].solar_voltage * serial_data.datahistory[-1].solar_current))
     
     
     for j, line in enumerate(lines):
